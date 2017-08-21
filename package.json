@@ -1,0 +1,23 @@
+{
+  "name": "game-project-ironhack",
+  "version": "1.0.0",
+  "description": "game project for ironhack",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arturfil/game-project-ironhack.git"
+  },
+  "author": "Arturo Filio Villa",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/arturfil/game-project-ironhack/issues"
+  },
+  "homepage": "https://github.com/arturfil/game-project-ironhack#readme",
+  "dependencies": {
+    "express": "^4.15.4"
+  }
+}
