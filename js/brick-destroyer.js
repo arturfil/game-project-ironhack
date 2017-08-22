@@ -9,6 +9,11 @@ function updateMousePos(e) {
   paddleX = mouseX - PADDLE_WIDTH/2;
 }
 
+function ballReset() {
+  ballX = canvas.height/2;
+  ballY = canvas.width/2;
+}
+
 window.onload = function() {
 
   canvas = document.getElementById('gameCanvas');
@@ -29,6 +34,7 @@ var ballSpeedY = 5;
 
 const PADDLE_WIDTH = 100;
 const PADDLE_HEIGHT = 10;
+const PADDLE_DIST_FROM_EDGE = 60;
 var paddleX = 400;
 
 function updateAll() {
@@ -45,9 +51,37 @@ function moveAll() {
     ballSpeedX = -ballSpeedX;
   }
 
-  if (ballY + radius > canvas.height   || ballY - radius < 0) {
+  if (ballY + radius > canvas.height) {
+    ballReset();
+    // ballSpeedY = -ballSpeedY;
+  }
+
+  if (ballY - radius == 0) {
+    // ballReset();
     ballSpeedY = -ballSpeedY;
   }
+
+  var difficulty = {
+    easy: .35,
+    normal: .45,
+    hard: .55
+  }
+
+  var paddleTopEdgeY = canvas.height - PADDLE_DIST_FROM_EDGE;
+  var paddleBottomEdgeY = paddleTopEdgeY + PADDLE_HEIGHT;
+  var paddleLeftEdgeX = paddleX;
+  var paddleRightEdgeX = paddleLeftEdgeX + PADDLE_WIDTH;
+  if (  ballY > paddleTopEdgeY - radius && // bellow the top of the paddle
+        ballY < paddleBottomEdgeY + radius && // above the bootom of the paddle
+        ballX > paddleLeftEdgeX && // right of the left side of the paddle
+        ballX < paddleRightEdgeX ) { // left of the right side of the paddle
+        ballSpeedY *= -1;
+
+        var centerOfPaddleX = paddleX + PADDLE_WIDTH/2;
+        var ballDistFromPaddleCenterX = ballX - centerOfPaddleX;
+        ballSpeedX = ballDistFromPaddleCenterX * difficulty.hard;
+
+    }
 }
 
 //drawing the canvas and the ball everytime the window loads.
@@ -56,7 +90,7 @@ function drawAll() {
   colorRect(0, 0, canvas.width, canvas.height, 'black') //draw screen
   colorCircle(ballX, ballY, radius, 'white' )           //draw ball
 
-  colorRect(paddleX, canvas.height - PADDLE_HEIGHT, PADDLE_WIDTH, PADDLE_HEIGHT, 'white');
+  colorRect(paddleX, canvas.height - PADDLE_DIST_FROM_EDGE, PADDLE_WIDTH, PADDLE_HEIGHT, 'white');
 }
 
 function colorRect(topLeftX, topLeftY, boxWidth, boxHeight, fillColor){

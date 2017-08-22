@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Game</title>
+    <title>Mario Game</title>
 
     <link
     href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
@@ -19,14 +19,9 @@
   </head>
   <body>
 
-  <h3>Brick Breaker</h3>
-
 <!-- setting up the canvas width an height in the html file so the images and objects don't appear pixelated -->
-  <div class="container ">
-    <div class="canvas">
-      <canvas id="gameCanvas" width="800" height="600"></canvas>
-    </div>
-  </div>
+  <canvas id="bg-canvas" width="768" height="600"></canvas>
+  <canvas id="fg-canvas" width="768" height="600"></canvas>
 
   <script
   src="https://code.jquery.com/jquery-3.2.1.min.js"
@@ -40,8 +35,12 @@
   crossorigin="anonymous">
   </script>
 
-  <script type="text/javascript" src="./js/brick-destroyer.js">
-  </script>
+
+  <script type="text/javascript" src="./js/input.js" charset="utf-8"></script>
+  <script type="text/javascript" src="./js/entities.js" charset="utf-8"></script>
+  <script type="text/javascript" src="./js/render.js" charset="utf-8"></script>
+  <script type="text/javascript" src="./js/hipster-mario.js"></script>
+
 
   </body>
 </html>
