@@ -10,6 +10,16 @@ h3 {
   text-transform: uppercase;
 }
 
+.tags {
+  margin: 0 auto;
+  border-bottom: 20px;
+}
+
+.tags h3 {
+  display: inline-flex;
+  text-align: center;
+}
+
 canvas {
   display: block;
   position: absolute;
