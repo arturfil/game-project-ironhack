@@ -98,7 +98,22 @@ function ballBrickHandling() {
   if (ballCollision /*+ radius*/ > 0 && ballCollision /*- radius*/ < BRICK_COLS * BRICK_ROWS) {
     if(brickGrid[ballCollision]){ // if the brick exist delete it and bounce off it, if not, continue with the vector
       brickGrid[ballCollision] = false;
-      ballSpeedY *= -1;
+
+      var prevBallX = ballX - ballSpeedX;
+      var prevBallY = ballY - ballSpeedY;
+      var prevBrickCol = Math.floor( prevBallX / BRICK_W);
+      var prevBrickRow = Math.floor( prevBallY / BRICK_H);
+
+      // if the point at where the ball makes a collision and the previous colum index is not the same as the current, change X ball direction
+      if(prevBrickCol != ballBrickCol) {
+        ballSpeedX *= -1;
+      }
+
+      // if the point at where the ball colides with the brick and previous row index is not the as the current..., change the Y ball direction
+      if(prevBrickRow != ballBrickRow) {
+        ballSpeedY *= -1;
+      }
+
     }
   }
 }
