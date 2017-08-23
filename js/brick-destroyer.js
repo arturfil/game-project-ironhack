@@ -1,3 +1,5 @@
+
+//game variables go here//
 var difficulty = 0.45;
 var ballX = 75;
 var ballY = 75;
@@ -5,12 +7,13 @@ var ballSpeedX = 5;
 var ballSpeedY = 5;
 var radius = 10;
 
+
 const BRICK_W = 100;
 const BRICK_H = 30;
 const BRICK_GAP = 2;
-const BRICK_COlS = 8;
+const BRICK_COLS = 8;
 const BRICK_ROWS = 6;
-var brickGrid = new Array(BRICK_COUNT);
+var brickGrid = new Array(BRICK_COLS);
 
 const PADDLE_WIDTH = 100;
 const PADDLE_HEIGHT = 10;
@@ -33,9 +36,11 @@ function updateMousePos(event) {
 }
 
 function brickReset(){
-  for(var i=0; i < BRICK_COL; i++) {
+  for(var i=0; i < BRICK_COLS; i++) {
     brickGrid[i] = true;
   }
+
+  brickGrid[5] = false;
 }
 
 window.onload = function() {
