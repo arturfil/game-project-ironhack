@@ -1,8 +1,8 @@
 
 //game variables go here//
 var difficulty = 0.45;
-var ballX = 75;
-var ballY = 75;
+var ballX = 450;
+var ballY = 450;
 var ballSpeedX = 5;
 var ballSpeedY = 5;
 var radius = 10;
@@ -94,8 +94,11 @@ function moveAll() {
   var ballBrickRow = Math.floor(ballY / BRICK_H) // setting  variable for when the brick and the ball y points meet.
   var ballCollision = rowColToArrayIndex(ballBrickCol, ballBrickRow); // setting up the array index of the brick when there's a 'collision'
 
-  if (ballCollision >= 0 && ballCollision < BRICK_COLS * BRICK_ROWS) {
-    brickGrid[ballCollision] = false;
+  if (ballCollision /*+ radius*/ > 0 && ballCollision /*- radius*/ < BRICK_COLS * BRICK_ROWS) {
+    if(brickGrid[ballCollision]){ // if the brick exist delete it and bounce off it, if not, continue with the vector
+      brickGrid[ballCollision] = false;
+      ballSpeedY *= -1;
+    }
   }
 
   // this contorls the movement of the paddle with the mouse given the varibles created for the Paddle creation
