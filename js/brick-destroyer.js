@@ -8,12 +8,13 @@ var ballSpeedY = 5;
 var radius = 10;
 
 
-const BRICK_W = 100;
-const BRICK_H = 30;
+const BRICK_W = 80;
+const BRICK_H = 20;
 const BRICK_GAP = 2;
-const BRICK_COLS = 8;
-const BRICK_ROWS = 6;
-var brickGrid = [true, true, true, false, true ];
+// const BRICK_COUNT = 8;
+const BRICK_COLS = 10;
+const BRICK_ROWS = 14;
+var brickGrid = new Array(BRICK_COLS * BRICK_ROWS); // This will keep track an array that is 2 dimensional (height and width).
 
 const PADDLE_WIDTH = 100;
 const PADDLE_HEIGHT = 10;
@@ -36,15 +37,16 @@ function updateMousePos(event) {
   paddleX = mouseX - PADDLE_WIDTH/2;
 }
 
-// this will check whether a brick should be drawn along with the drawBricks(); function
-function brickReset(){
-  for(var i=0; i < BRICK_COLS * BRICK_ROWS; i++) {
+// this will set the on and off state of the bricks or the 'true' or 'false' state of the brick in order to exist or not
+function brickReset() {
+  for(var i = 0; i < BRICK_COLS * BRICK_ROWS; i++) {
     brickGrid[i] = true;
   }
 
-  brickGrid[5] = false;
+  brickGrid[18] = false; // testing
 }
 
+// ALL THE FUNCTIONS SHOULD GO HERE! OTHERWISE IT DOESN'T RENDER!!!!!
 // Game loaded
 window.onload = function() {
   canvas = document.getElementById('gameCanvas');
@@ -54,6 +56,8 @@ window.onload = function() {
   setInterval(updateAll, 1000/framesPerSecond);
 
   canvas.addEventListener('mousemove', updateMousePos);
+
+  brickReset();
 }
 
 // this function redraws and controls the movement of all the objects in the game
@@ -86,6 +90,14 @@ function moveAll() {
     ballSpeedY = -ballSpeedY;
   }
 
+  var ballBrickCol = Math.floor(ballX / BRICK_W) // setting variables for when the brick and the ball x points meet
+  var ballBrickRow = Math.floor(ballY / BRICK_H) // setting  variable for when the brick and the ball y points meet.
+  var ballCollision = rowColToArrayIndex(ballBrickCol, ballBrickRow); // setting up the array index of the brick when there's a 'collision'
+
+  if (ballCollision >= 0 && ballCollision < BRICK_COLS * BRICK_ROWS) {
+    brickGrid[ballCollision] = false;
+  }
+
   // this contorls the movement of the paddle with the mouse given the varibles created for the Paddle creation
   var paddleTopEdgeY = canvas.height-PADDLE_DIST_FROM_EDGE;
   var paddleBottomEdgeY = paddleTopEdgeY + PADDLE_HEIGHT;
@@ -105,10 +117,23 @@ function moveAll() {
 
 }
 
+// This function will keep track of each brick's index by accounting for the Brick row, the colomumn that it's at.
+function rowColToArrayIndex(col, row) {
+  return col + BRICK_COLS * row;  // col = eachCol (the column within a row); row = eachRow; BRICK_COLS = the whole column of the array;
+  // put the 'var Array Index here'
+}
+
 //this function calls colorRec() and test the logic to decide whether it should draw it or not
 function drawBricks() {
-  if(brickGrid[0]) {
-    colorRect(BRICK_W*0, 0, BRICK_W-2, BRICK_H, 'red')
+  for(var eachRow = 0; eachRow < BRICK_ROWS; eachRow++) {
+    for (var eachCol = 0; eachCol < BRICK_COLS; eachCol++) {
+
+      var arrayIndex = rowColToArrayIndex(eachCol, eachRow)
+
+      if(brickGrid[arrayIndex]) {
+        colorRect(BRICK_W * eachCol, BRICK_H * eachRow, BRICK_W - BRICK_GAP, BRICK_H - BRICK_GAP, 'red')
+      }
+    }
   }
 }
 
