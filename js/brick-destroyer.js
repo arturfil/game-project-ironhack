@@ -13,7 +13,7 @@ const BRICK_H = 20;
 const BRICK_GAP = 2;
 // const BRICK_COUNT = 8;
 const BRICK_COLS = 10;
-const BRICK_ROWS = 14;
+const BRICK_ROWS = 8;
 var brickGrid = new Array(BRICK_COLS * BRICK_ROWS); // This will keep track an array that is 2 dimensional (height and width).
 
 const PADDLE_WIDTH = 100;
@@ -43,7 +43,7 @@ function brickReset() {
     brickGrid[i] = true;
   }
 
-  brickGrid[18] = false; // testing
+  // brickGrid[0] = false; // testing
 }
 
 // ALL THE FUNCTIONS SHOULD GO HERE! OTHERWISE IT DOESN'T RENDER!!!!!
@@ -72,8 +72,7 @@ function ballReset() {
   ballY = canvas.height/2;
 }
 
-// this controls the movement of the ball and the paddle
-function moveAll() {
+function ballMove() {
   ballX += ballSpeedX;
   ballY += ballSpeedY;
 
@@ -89,7 +88,9 @@ function moveAll() {
   if (ballY - radius < 0) {
     ballSpeedY = -ballSpeedY;
   }
+}
 
+function ballBrickHandling() {
   var ballBrickCol = Math.floor(ballX / BRICK_W) // setting variables for when the brick and the ball x points meet
   var ballBrickRow = Math.floor(ballY / BRICK_H) // setting  variable for when the brick and the ball y points meet.
   var ballCollision = rowColToArrayIndex(ballBrickCol, ballBrickRow); // setting up the array index of the brick when there's a 'collision'
@@ -100,7 +101,9 @@ function moveAll() {
       ballSpeedY *= -1;
     }
   }
+}
 
+function ballBrickPaddle() {
   // this contorls the movement of the paddle with the mouse given the varibles created for the Paddle creation
   var paddleTopEdgeY = canvas.height-PADDLE_DIST_FROM_EDGE;
   var paddleBottomEdgeY = paddleTopEdgeY + PADDLE_HEIGHT;
@@ -117,7 +120,13 @@ function moveAll() {
       var ballDistFromPaddleCenterX = ballX - centerOfPaddleX;
       ballSpeedX = ballDistFromPaddleCenterX * difficulty;
     }
+}
 
+// this controls the movement of the ball and the paddle
+function moveAll() {
+  ballMove();
+  ballBrickHandling();
+  ballBrickPaddle();
 }
 
 // This function will keep track of each brick's index by accounting for the Brick row, the colomumn that it's at.
