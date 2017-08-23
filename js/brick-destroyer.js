@@ -13,7 +13,7 @@ const BRICK_H = 30;
 const BRICK_GAP = 2;
 const BRICK_COLS = 8;
 const BRICK_ROWS = 6;
-var brickGrid = new Array(BRICK_COLS);
+var brickGrid = [true, true, true, false, true ];
 
 const PADDLE_WIDTH = 100;
 const PADDLE_HEIGHT = 10;
@@ -25,6 +25,7 @@ var canvas, canvasContext;
 var mouseX = 0;
 var mouseY = 0;
 
+//Pretty self explanatory
 function updateMousePos(event) {
   var rect = canvas.getBoundingClientRect();
   var root = document.documentElement;
@@ -35,14 +36,16 @@ function updateMousePos(event) {
   paddleX = mouseX - PADDLE_WIDTH/2;
 }
 
+// this will check whether a brick should be drawn along with the drawBricks(); function
 function brickReset(){
-  for(var i=0; i < BRICK_COLS; i++) {
+  for(var i=0; i < BRICK_COLS * BRICK_ROWS; i++) {
     brickGrid[i] = true;
   }
 
   brickGrid[5] = false;
 }
 
+// Game loaded
 window.onload = function() {
   canvas = document.getElementById('gameCanvas');
   canvasContext = canvas.getContext('2d');
@@ -53,20 +56,24 @@ window.onload = function() {
   canvas.addEventListener('mousemove', updateMousePos);
 }
 
+// this function redraws and controls the movement of all the objects in the game
 function updateAll() {
   moveAll();
   drawAll();
 }
 
+// every time the ball touches the bottom, the ball will re-apear or 'reset' in the screen
 function ballReset() {
   ballX = canvas.width/2;
   ballY = canvas.height/2;
 }
 
+// this controls the movement of the ball and the paddle
 function moveAll() {
   ballX += ballSpeedX;
   ballY += ballSpeedY;
 
+  // this 'if' statements control the movement and the boundraries of the ball movement
   if (ballX + radius > canvas.width || ballX - radius < 0) {
     ballSpeedX = -ballSpeedX
   }
@@ -79,6 +86,7 @@ function moveAll() {
     ballSpeedY = -ballSpeedY;
   }
 
+  // this contorls the movement of the paddle with the mouse given the varibles created for the Paddle creation
   var paddleTopEdgeY = canvas.height-PADDLE_DIST_FROM_EDGE;
   var paddleBottomEdgeY = paddleTopEdgeY + PADDLE_HEIGHT;
   var paddleLeftEdgeX = paddleX;
@@ -89,6 +97,7 @@ function moveAll() {
     ballX < paddleRightEdgeX + radius ) {           //right
       ballSpeedY = -ballSpeedY;
 
+      // this specifically refers that your mouse will contorl the CENTER of the mouse
       var centerOfPaddleX = paddleX + PADDLE_WIDTH/2;
       var ballDistFromPaddleCenterX = ballX - centerOfPaddleX;
       ballSpeedX = ballDistFromPaddleCenterX * difficulty;
@@ -96,33 +105,33 @@ function moveAll() {
 
 }
 
+//this function calls colorRec() and test the logic to decide whether it should draw it or not
 function drawBricks() {
-  for (var eachRow=0; eachRow<BRICK_ROWS; eachRow++) {
-    for (var eachCol=0; eachCol < BRICK_COLS; eachCol++) {
-      if(brickGrid[eachCol] = true) { // CHECK THE CONDITIONAL! FOR NOW I DID A TEMPORARY FIX!
-        colorRect(BRICK_W * eachCol, BRICK_H * eachRow, BRICK_W-BRICK_GAP, BRICK_H-BRICK_GAP, 'blue');
-      }
-    }
+  if(brickGrid[0]) {
+    colorRect(BRICK_W*0, 0, BRICK_W-2, BRICK_H, 'red')
   }
 }
 
+//Draws all of the objects
 function drawAll() {
   colorRect(0, 0, canvas.width, canvas.height, 'black'); //clear screen
 
   colorCircle(ballX, ballY, radius, 'white') //draw ball
 
-  colorRect(paddleX, canvas.height-PADDLE_DIST_FROM_EDGE, PADDLE_WIDTH, PADDLE_HEIGHT, 'white')
+  colorRect(paddleX, canvas.height-PADDLE_DIST_FROM_EDGE, PADDLE_WIDTH, PADDLE_HEIGHT, 'white') //draw paddle
 
-  drawBricks();
+  drawBricks();// pretty self explanatory
 
   //colorText(mouseX+ ... DONT WANT TO DISPLAY THE MOUSE COORDINATES)
 }
 
+//Draw a rectangle either the bricks or the paddle
 function colorRect(topLeftX, topLeftY, boxWidth, boxHeight, fillColor) {
   canvasContext.fillStyle = fillColor;
   canvasContext.fillRect(topLeftX, topLeftY, boxWidth, boxHeight);
 }
 
+//drawing the ball
 function colorCircle(centerX, centerY, radius, fillColor) {
   canvasContext.fillStyle = fillColor;
   canvasContext.beginPath();
