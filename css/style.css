@@ -3,6 +3,7 @@ body {
   padding: 0;
   margin: 0;
   background-color: #f7f7f7;
+  font-family: 'Share Tech', sans-serif;
 }
 
 h3 {
@@ -12,12 +13,20 @@ h3 {
 
 .tags {
   margin: 0 auto;
-  border-bottom: 20px;
+  max-width: 800px;
+  margin-top: 30px;
 }
 
 .tags h3 {
   display: inline-flex;
   text-align: center;
+  margin: 0 30px;
+  margin-top: 30px;
+}
+
+.btn-layout {
+  text-align: center;
+  max-width: 800px;
 }
 
 canvas {
@@ -36,6 +45,7 @@ canvas {
   -moz-user-select: none;
   -webkit-touch-callout: none;
   -webkit-user-drag: none;
+  margin-bottom: 35px;
 }
 
 #bg-canvas {

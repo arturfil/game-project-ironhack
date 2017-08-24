@@ -4,11 +4,14 @@
     <meta charset="utf-8">
     <title>Game</title>
 
+    <link href="https://fonts.googleapis.com/css?family=Share+Tech" rel="stylesheet">
+
     <link
-    href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
     rel="stylesheet"
-    integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
+    integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M"
     crossorigin="anonymous">
+
 
     <link rel="stylesheet" href="./css/style.css">
 
@@ -23,18 +26,19 @@
 
   <div class="container tags">
     <div class="row">
-      <div class="col-6">
+      <div class="col-4">
         <h3>Score: 0</h3>
       </div>
-      <div class="col-6">
+      <div class="col-4">
         <h3>Level: 1</h3>
       </div>
-      <div class="col-6">
-        <h3>Lives left:</h3>
-        <h3> 3</h3>
+      <div class="col-4">
+        <h3>Lives left: 3</h3>
       </div>
     </div>
   </div>
+
+
 
 <!-- setting up the canvas width an height in the html file so the images and objects don't appear pixelated -->
   <div class="container ">
@@ -43,7 +47,13 @@
     </div>
   </div>
 
-  <h3></h3>
+  <div class="container btn-layout">
+    <div class="row">
+      <div class="">
+        <button class="btn btn-outline-dark start-btn" type="button" name="button">Start Game</button>
+      </div>
+    </div>
+  </div>
 
   <script
   src="https://code.jquery.com/jquery-3.2.1.min.js"
@@ -58,6 +68,7 @@
   </script>
 
   <script type="text/javascript" src="./js/brick-destroyer.js" charset="utf-8"></script>
+  <script type="text/javascript" src="./js/jquery-funcs.js" charset="utf-8"></script>
 
   <!-- <script type="text/javascript" scr="./js/moveAll.js"></script>
   <script type="text/javascript" scr="./js/drawAll.js"></script>
