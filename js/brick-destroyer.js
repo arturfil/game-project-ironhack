@@ -13,9 +13,10 @@ const BRICK_H = 20 ;
 const BRICK_GAP = 2;
 // const BRICK_COUNT = 8;
 const BRICK_COLS = 10;
-const BRICK_ROWS = 6;
+const BRICK_ROWS = 5;
 var brickGrid = new Array(BRICK_COLS * BRICK_ROWS); // This will keep track an array that is 2 dimensional (height and width).
 var bricksLeft = 0;
+var lifesLeft = 3;
 
 const PADDLE_WIDTH = 100;
 const PADDLE_HEIGHT = 10;
@@ -84,12 +85,23 @@ function ballMove() {
   ballY += ballSpeedY;
 
   // this 'if' statements control the movement and the boundraries of the ball movement
-  if (ballX + radius > canvas.width || ballX - radius < 0) {
-    ballSpeedX = -ballSpeedX
+  if (ballX < 0 && ballSpeedX < 0.0) {
+    ballSpeedX *= -1;
+  }
+
+  if (ballX > canvas.width && ballSpeedX > 0.0) {
+    ballSpeedX *= -1;
   }
 
   if (ballY + radius > canvas.height) {
-    ballReset();
+    if (lifesLeft > 0) {
+      ballReset();
+      lifesLeft--;
+    } else if (lifesLeft <= 0) {
+      ballReset();
+      brickReset();
+    }
+
   }
 
   if (ballY - radius < 0) {
@@ -105,6 +117,7 @@ function ballBrickHandling() {
   if(ballBrickCol >= 0 && ballBrickCol < BRICK_COLS && ballBrickRow >= 0 && ballBrickRow < BRICK_ROWS) {
     if(brickGrid[ballCollision]) {
       brickGrid[ballCollision] = false;
+      bricksLeft--;
 
       var prevBallX = ballX - ballSpeedX;
       var prevBallY = ballY - ballSpeedY;
@@ -134,10 +147,10 @@ function ballPaddleHandling() {
     ballX < paddleRightEdgeX + radius ) {           //right
       ballSpeedY = -ballSpeedY;
 
-      // this specifically refers that your mouse will contorl the CENTER of the mouse
-      var centerOfPaddleX = paddleX + PADDLE_WIDTH/2;
-      var ballDistFromPaddleCenterX = ballX - centerOfPaddleX;
-      ballSpeedX = ballDistFromPaddleCenterX * difficulty;
+    // this specifically refers that your mouse will contorl the CENTER of the mouse
+    var centerOfPaddleX = paddleX + PADDLE_WIDTH/2;
+    var ballDistFromPaddleCenterX = ballX - centerOfPaddleX;
+    ballSpeedX = ballDistFromPaddleCenterX * difficulty;
 
     if(bricksLeft == 0) {
       brickReset();
