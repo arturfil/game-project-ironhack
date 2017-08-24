@@ -105,7 +105,19 @@ function ballBrickHandling() {
   if(ballBrickCol >= 0 && ballBrickCol < BRICK_COLS && ballBrickRow >= 0 && ballBrickRow < BRICK_ROWS) {
     if(brickGrid[ballCollision]) {
       brickGrid[ballCollision] = false;
-      ballSpeedY *= -1;
+
+      var prevBallX = ballX - ballSpeedX;
+      var prevBallY = ballY - ballSpeedY;
+      var prevBrickCol = Math.floor( prevBallX / BRICK_W );
+      var prevBrickRow = Math.floor( prevBallY / BRICK_H );
+
+      if(prevBrickCol != ballBrickCol) {
+        ballSpeedX *= -1;
+      }
+
+      if(prevBrickRow != ballBrickRow) {
+        ballSpeedY *= -1;
+      }
     }
   }
 }
@@ -133,7 +145,7 @@ function ballPaddleHandling() {
   }
 }
 
-// this controls the movement of the ball and the paddle
+// this controls the movement of the ball, the paddle and the brick collision
 function moveAll() {
   ballMove();
   ballBrickHandling();
