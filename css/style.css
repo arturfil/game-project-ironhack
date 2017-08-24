@@ -31,10 +31,15 @@ h3 {
   width: 800px;
   height: 600px;
   color: white;
-  background-color: black;
+  background-image: url(../img/space-background.webp);
+  background-size: cover;
   border: black solid 3px;
   margin: 110px auto 0;
+  repeat: none;
+
 }
+
+
 
 .start-title {
   font-size: 25px;
@@ -45,9 +50,15 @@ h3 {
   font-size: 25px;
 }
 
-.start-title:hover {
-  text-decoration: underline;
-  font-size: 40px;
+.start-button {
+  background-color: #8dff75;
+  border-radius: 50px;
+  margin: 0 35%;
+}
+
+.start-button:hover {
+  font-size: 35px;
+  transition: .30s;
 }
 
 canvas {
