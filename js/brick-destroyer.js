@@ -90,21 +90,11 @@ function ballMove() {
 
   if (ballY + radius > canvas.height) {
     ballReset();
-    brickReset();
   }
 
   if (ballY - radius < 0) {
     ballSpeedY = -ballSpeedY;
   }
-}
-
-function isBrickAtColRow(col, row) {
-    if(col >= 0 && col < BRICK_COLS && row >= 0 && ballBrickRow < BRICK_ROWS) {
-      var ballCollision = rowColToArrayIndex(col, row);
-      return brickGrid[brickIndexUnderCoord];
-    } else {
-      return false;
-    }
 }
 
 function ballBrickHandling() {
@@ -113,36 +103,9 @@ function ballBrickHandling() {
   var ballCollision = rowColToArrayIndex(ballBrickCol, ballBrickRow); // setting up the array index of the brick when there's a 'collision'
 
   if(ballBrickCol >= 0 && ballBrickCol < BRICK_COLS && ballBrickRow >= 0 && ballBrickRow < BRICK_ROWS) {
-
-    if(isBrickAtColRow(ballBrickCol, ballBrickRow)) {
+    if(brickGrid[ballCollision]) {
       brickGrid[ballCollision] = false;
-      bricksLeft--; // every time a brick is eliminated, the brick counter "bricksLeft" decreases.
-
-      var prevBallX = ballX - ballSpeedX;
-      var prevBallY = ballY - ballSpeedY;
-      var prevBrickCol = Math.floor(prevBallX / BRICK_W);
-      var prevBrickRow = Math.floor(prevBallY / BRICK_H);
-
-      var bothTestsFailed = true;
-
-      if(prevBrickCol != ballBrickCol) {
-          if(isBrickAtColRow(prevBrickCol, ballBrickRow) == false) {
-            ballSpeedX *= -1;
-            bothTextsFailed = false;
-          }
-        }
-
-      if(prevBrickRow != ballBrickRow) {
-        if(isBrickAtColRow(ballBrickCol, prevBrickRow) == false) {
-          ballSpeedY *= -1;
-          ballTestsFailed = false;
-        }
-      }
-
-      if(bothTestsFailed) {
-        ballSpeedX *= -1;
-        ballSpeedY *= -1;
-      }
+      ballSpeedY *= -1;
     }
   }
 }
@@ -164,10 +127,10 @@ function ballPaddleHandling() {
       var ballDistFromPaddleCenterX = ballX - centerOfPaddleX;
       ballSpeedX = ballDistFromPaddleCenterX * difficulty;
 
-      if(bricksLeft == 0) {
-        brickReset();
-      }
+    if(bricksLeft == 0) {
+      brickReset();
     }
+  }
 }
 
 // this controls the movement of the ball and the paddle
