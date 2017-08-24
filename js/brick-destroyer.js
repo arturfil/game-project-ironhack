@@ -16,7 +16,7 @@ const BRICK_COLS = 10;
 const BRICK_ROWS = 9;
 var brickGrid = new Array(BRICK_COLS * BRICK_ROWS); // This will keep track an array that is 2 dimensional (height and width).
 var bricksLeft = 0;
-var lifesLeft = 3;
+var livesLeft = 4;
 
 const PADDLE_WIDTH = 100;
 const PADDLE_HEIGHT = 10;
@@ -53,9 +53,10 @@ function brickReset() {
   // brickGrid[0] = false; // testing
 }
 
-// ALL THE FUNCTIONS SHOULD GO HERE! OTHERWISE IT DOESN'T RENDER!!!!!
-// Game loaded
-window.onload = function() {
+function start() {
+  $("canvas").fadeIn();
+  // ALL THE FUNCTIONS SHOULD GO HERE! OTHERWISE IT DOESN'T RENDER!!!!!
+  // Game loaded{
   canvas = document.getElementById('gameCanvas');
   canvasContext = canvas.getContext('2d');
 
@@ -94,14 +95,13 @@ function ballMove() {
   }
 
   if (ballY + radius > canvas.height) {
-    if (lifesLeft > 0) {
+    if (livesLeft > 0) {
       ballReset();
-      lifesLeft--;
-    } else if (lifesLeft <= 0) {
+      livesLeft--;
+    } else if (livesLeft <= 0) {
       ballReset();
       brickReset();
     }
-
   }
 
   if (ballY - radius < 0) {
@@ -179,7 +179,7 @@ function drawBricks() {
       var arrayIndex = rowColToArrayIndex(eachCol, eachRow)
 
       if(brickGrid[arrayIndex]) {
-        colorRect(BRICK_W * eachCol, BRICK_H * eachRow, BRICK_W - BRICK_GAP, BRICK_H - BRICK_GAP, 'red')
+        colorRect(BRICK_W * eachCol, BRICK_H * eachRow, BRICK_W - BRICK_GAP, BRICK_H - BRICK_GAP, '#FC5B1C')
       }
     }
   }
