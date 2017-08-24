@@ -6,6 +6,11 @@ body {
   font-family: 'Share Tech', sans-serif;
 }
 
+.playground {
+  border: blue solid 2px;
+  background-color: gray;
+}
+
 h3 {
   text-align: center;
   text-transform: uppercase;
