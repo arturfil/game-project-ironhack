@@ -60,7 +60,7 @@ window.onload = function() {
   canvasContext = canvas.getContext('2d');
 
   var framesPerSecond = 30;
-  setInterval(start, 1000/framesPerSecond);
+  setInterval(updateAll, 1000/framesPerSecond);
 
   canvas.addEventListener('mousemove', updateMousePos);
 
@@ -68,12 +68,10 @@ window.onload = function() {
   ballReset();
 }
 
-function start() {
-  // this function redraws and controls the movement of all the objects in the game
-  function updateAll() {
-    moveAll();
-    drawAll();
-  }
+// this function redraws and controls the movement of all the objects in the game
+function updateAll() {
+  moveAll();
+  drawAll();
 }
 
 // every time the ball touches the bottom, the ball will re-apear or 'reset' in the screen
@@ -105,7 +103,6 @@ function ballMove() {
     }
 
   }
-
 
   if (ballY - radius < 0) {
     ballSpeedY = -ballSpeedY;
