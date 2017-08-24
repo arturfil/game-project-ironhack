@@ -7,14 +7,15 @@ var ballSpeedX = 5;
 var ballSpeedY = 5;
 var radius = 10;
 
-
+// Check brick collision again;
 const BRICK_W = 80;
-const BRICK_H = 20;
+const BRICK_H = 20 ;
 const BRICK_GAP = 2;
 // const BRICK_COUNT = 8;
 const BRICK_COLS = 10;
-const BRICK_ROWS = 8;
+const BRICK_ROWS = 6;
 var brickGrid = new Array(BRICK_COLS * BRICK_ROWS); // This will keep track an array that is 2 dimensional (height and width).
+var bricksLeft = 0;
 
 const PADDLE_WIDTH = 100;
 const PADDLE_HEIGHT = 10;
@@ -35,14 +36,19 @@ function updateMousePos(event) {
   // var mouseY = event.clientY - rect.top - root.scrollTop;
 
   paddleX = mouseX - PADDLE_WIDTH/2;
+
 }
 
 // this will set the on and off state of the bricks or the 'true' or 'false' state of the brick in order to exist or not
 function brickReset() {
-  for(var i = 0; i < BRICK_COLS * BRICK_ROWS; i++) {
-    brickGrid[i] = true;
+  bricksLeft = 0;
+  for(var i = 0; i<3 * BRICK_COLS; i++) {
+    brickGrid[i] = false;
   }
-
+  for(var i = 3 * BRICK_COLS; i < BRICK_COLS * BRICK_ROWS; i++) {
+    brickGrid[i] = true;
+    bricksLeft++; // every time we reset the game and create the brick grid, the counter code is ran and counts all the created bricks in the begginning.
+  }
   // brickGrid[0] = false; // testing
 }
 
@@ -58,6 +64,7 @@ window.onload = function() {
   canvas.addEventListener('mousemove', updateMousePos);
 
   brickReset();
+  ballReset();
 }
 
 // this function redraws and controls the movement of all the objects in the game
@@ -83,6 +90,7 @@ function ballMove() {
 
   if (ballY + radius > canvas.height) {
     ballReset();
+    brickReset();
   }
 
   if (ballY - radius < 0) {
@@ -90,35 +98,56 @@ function ballMove() {
   }
 }
 
+function isBrickAtColRow(col, row) {
+    if(col >= 0 && col < BRICK_COLS && row >= 0 && ballBrickRow < BRICK_ROWS) {
+      var ballCollision = rowColToArrayIndex(col, row);
+      return brickGrid[brickIndexUnderCoord];
+    } else {
+      return false;
+    }
+}
+
 function ballBrickHandling() {
   var ballBrickCol = Math.floor(ballX / BRICK_W) // setting variables for when the brick and the ball x points meet
   var ballBrickRow = Math.floor(ballY / BRICK_H) // setting  variable for when the brick and the ball y points meet.
   var ballCollision = rowColToArrayIndex(ballBrickCol, ballBrickRow); // setting up the array index of the brick when there's a 'collision'
 
-  if (ballCollision /*+ radius*/ > 0 && ballCollision /*- radius*/ < BRICK_COLS * BRICK_ROWS) {
-    if(brickGrid[ballCollision]){ // if the brick exist delete it and bounce off it, if not, continue with the vector
+  if(ballBrickCol >= 0 && ballBrickCol < BRICK_COLS && ballBrickRow >= 0 && ballBrickRow < BRICK_ROWS) {
+
+    if(isBrickAtColRow(ballBrickCol, ballBrickRow)) {
       brickGrid[ballCollision] = false;
+      bricksLeft--; // every time a brick is eliminated, the brick counter "bricksLeft" decreases.
 
       var prevBallX = ballX - ballSpeedX;
       var prevBallY = ballY - ballSpeedY;
-      var prevBrickCol = Math.floor( prevBallX / BRICK_W);
-      var prevBrickRow = Math.floor( prevBallY / BRICK_H);
+      var prevBrickCol = Math.floor(prevBallX / BRICK_W);
+      var prevBrickRow = Math.floor(prevBallY / BRICK_H);
 
-      // if the point at where the ball makes a collision and the previous colum index is not the same as the current, change X ball direction
+      var bothTestsFailed = true;
+
       if(prevBrickCol != ballBrickCol) {
-        ballSpeedX *= -1;
+          if(isBrickAtColRow(prevBrickCol, ballBrickRow) == false) {
+            ballSpeedX *= -1;
+            bothTextsFailed = false;
+          }
+        }
+
+      if(prevBrickRow != ballBrickRow) {
+        if(isBrickAtColRow(ballBrickCol, prevBrickRow) == false) {
+          ballSpeedY *= -1;
+          ballTestsFailed = false;
+        }
       }
 
-      // if the point at where the ball colides with the brick and previous row index is not the as the current..., change the Y ball direction
-      if(prevBrickRow != ballBrickRow) {
+      if(bothTestsFailed) {
+        ballSpeedX *= -1;
         ballSpeedY *= -1;
       }
-
     }
   }
 }
 
-function ballBrickPaddle() {
+function ballPaddleHandling() {
   // this contorls the movement of the paddle with the mouse given the varibles created for the Paddle creation
   var paddleTopEdgeY = canvas.height-PADDLE_DIST_FROM_EDGE;
   var paddleBottomEdgeY = paddleTopEdgeY + PADDLE_HEIGHT;
@@ -134,6 +163,10 @@ function ballBrickPaddle() {
       var centerOfPaddleX = paddleX + PADDLE_WIDTH/2;
       var ballDistFromPaddleCenterX = ballX - centerOfPaddleX;
       ballSpeedX = ballDistFromPaddleCenterX * difficulty;
+
+      if(bricksLeft == 0) {
+        brickReset();
+      }
     }
 }
 
@@ -141,7 +174,7 @@ function ballBrickPaddle() {
 function moveAll() {
   ballMove();
   ballBrickHandling();
-  ballBrickPaddle();
+  ballPaddleHandling ();
 }
 
 // This function will keep track of each brick's index by accounting for the Brick row, the colomumn that it's at.
