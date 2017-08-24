@@ -115,8 +115,6 @@ function ballBrickHandling() {
         ballSpeedX *= -1;
       }
 
-      //Testing if the github checkout worked, if you see this it failed
-
       if(prevBrickRow != ballBrickRow) {
         ballSpeedY *= -1;
       }
