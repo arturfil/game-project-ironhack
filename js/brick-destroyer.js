@@ -36,8 +36,8 @@ const BRICK_W = 80;
 const BRICK_H = 20 ;
 const BRICK_GAP = 2;
 // const BRICK_COUNT = 8;
-const BRICK_COLS = 1;
-const BRICK_ROWS = 4;
+const BRICK_COLS = 10;
+const BRICK_ROWS = 8;
 var brickGrid = new Array(BRICK_COLS * BRICK_ROWS); // This will keep track an array that is 2 dimensional (height and width).
 var bricksLeft = 0;
 var livesLeft = 4;
@@ -151,6 +151,8 @@ function ballBrickHandling() {
       brickGrid[ballCollision] = false;
 
       bricksLeft--;
+      score++;
+      $(".score").html("Score: " + score * 12);
 
       var prevBallX = ballX - ballSpeedX;
       var prevBallY = ballY - ballSpeedY;
@@ -165,8 +167,6 @@ function ballBrickHandling() {
         ballSpeedY *= -1;
       }
     }
-    score++;
-    $(".score").html("Score: " + score * 2);
   }
 }
 
