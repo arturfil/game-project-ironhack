@@ -11,33 +11,33 @@ var radius = 10;
 // song.loop = true;
 // song.play();
 
-var audio = new Audio();
-    i = 0;
-var playlist = new Array(
-  "./audio/little_secrets.m4a",
-  "./audio/fire.m4a",
-  "./audio/brocoli.m4a",
-  "./audio/fall.m4a"
-);
-
-audio.addEventListener('ended', function () {
-    i = ++i < playlist.length ? i : 0;
-    console.log(i)
-    audio.src = playlist[i];
-    audio.play();
-}, true);
-audio.volume = 0.3;
-audio.loop = false;
-audio.src = playlist[0];
-audio.play();
+// var audio = new Audio();
+//     i = 0;
+// var playlist = new Array(
+//   "./audio/little_secrets.m4a",
+//   "./audio/fire.m4a",
+//   "./audio/brocoli.m4a",
+//   "./audio/fall.m4a"
+// );
+//
+// audio.addEventListener('ended', function () {
+//     i = ++i < playlist.length ? i : 0;
+//     console.log(i)
+//     audio.src = playlist[i];
+//     audio.play();
+// }, true);
+// audio.volume = 0.3;
+// audio.loop = false;
+// audio.src = playlist[0];
+// audio.play();
 
 // Check brick collision again;
 const BRICK_W = 80;
 const BRICK_H = 20 ;
 const BRICK_GAP = 2;
 // const BRICK_COUNT = 8;
-const BRICK_COLS = 10;
-const BRICK_ROWS = 8;
+const BRICK_COLS = 1;
+const BRICK_ROWS = 4;
 var brickGrid = new Array(BRICK_COLS * BRICK_ROWS); // This will keep track an array that is 2 dimensional (height and width).
 var bricksLeft = 0;
 var livesLeft = 4;
@@ -141,6 +141,7 @@ function ballMove() {
 }
 
 function ballBrickHandling() {
+  var audio = new Audio("./audio/beep.wav");
   var ballBrickCol = Math.floor(ballX / BRICK_W) // setting variables for when the brick and the ball x points meet
   var ballBrickRow = Math.floor(ballY / BRICK_H) // setting  variable for when the brick and the ball y points meet.
   var ballCollision = rowColToArrayIndex(ballBrickCol, ballBrickRow); // setting up the array index of the brick when there's a 'collision'
@@ -153,6 +154,7 @@ function ballBrickHandling() {
       bricksLeft--;
       score++;
       $(".score").html("Score: " + score * 12);
+      audio.play();
 
       var prevBallX = ballX - ballSpeedX;
       var prevBallY = ballY - ballSpeedY;
@@ -172,6 +174,9 @@ function ballBrickHandling() {
 
 function ballPaddleHandling() {
   // this contorls the movement of the paddle with the mouse given the varibles created for the Paddle creation
+  var paddle = new Audio("./audio/paddle.wav");
+  var levelUp = new Audio("./audio/level-up.wav");
+
   var paddleTopEdgeY = canvas.height-PADDLE_DIST_FROM_EDGE;
   var paddleBottomEdgeY = paddleTopEdgeY + PADDLE_HEIGHT;
   var paddleLeftEdgeX = paddleX;
@@ -182,6 +187,7 @@ function ballPaddleHandling() {
     ballX < paddleRightEdgeX + radius ) {           //right
       ballSpeedY = -ballSpeedY;
 
+
     // this specifically refers that your mouse will contorl the CENTER of the mouse
     var centerOfPaddleX = paddleX + PADDLE_WIDTH/2;
     var ballDistFromPaddleCenterX = ballX - centerOfPaddleX;
@@ -189,6 +195,7 @@ function ballPaddleHandling() {
 
     if(bricksLeft == 0) {
       brickReset();
+      levelUp.play();
       level++;
       $(".level").html("Level: " + level);
     }
