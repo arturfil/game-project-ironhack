@@ -105,7 +105,8 @@ function ballReset() {
 }
 
 function ballMove() {
-  var error = new Audio("./audio/error.wav");
+  var error = new Audio("./audio/error.m4a");
+  var ballLost = new Audio("./audio/ball-lost.m4a");
 
   ballX += ballSpeedX;
   ballY += ballSpeedY;
@@ -121,6 +122,7 @@ function ballMove() {
 
   if (ballY + radius > canvas.height) {
     if (livesLeft > 0) {
+      ballLost.play();
       ballReset();
       livesLeft--;
       $(".lives").html("Lives: " + livesLeft);
@@ -129,8 +131,10 @@ function ballMove() {
       brickReset();
       score = 0;
       livesLeft = 4;
+      level = 1;
       $(".lives").html("Lives: " + livesLeft);
       $(".score").html("Score: " + score);
+      $(".level").html("Level: " + level);
       error.play();
     }
   }
