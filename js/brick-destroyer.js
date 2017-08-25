@@ -36,12 +36,13 @@ const BRICK_W = 80;
 const BRICK_H = 20 ;
 const BRICK_GAP = 2;
 // const BRICK_COUNT = 8;
-const BRICK_COLS = 10;
-const BRICK_ROWS = 9;
+const BRICK_COLS = 1;
+const BRICK_ROWS = 4;
 var brickGrid = new Array(BRICK_COLS * BRICK_ROWS); // This will keep track an array that is 2 dimensional (height and width).
 var bricksLeft = 0;
 var livesLeft = 4;
 var score = 0;
+var level = 1;
 
 const PADDLE_WIDTH = 100;
 const PADDLE_HEIGHT = 10;
@@ -123,12 +124,14 @@ function ballMove() {
     if (livesLeft > 0) {
       ballReset();
       livesLeft--;
-      $(".lives").html("Lives :" + livesLeft);
+      $(".lives").html("Lives: " + livesLeft);
     } else if (livesLeft <= 0) {
       ballReset();
       brickReset();
+      score = 0;
       livesLeft = 4;
-      $(".lives").html("Lives :" + livesLeft);
+      $(".lives").html("Lives: " + livesLeft);
+      $(".score").html("Score: " + score);
     }
   }
 
@@ -162,6 +165,8 @@ function ballBrickHandling() {
         ballSpeedY *= -1;
       }
     }
+    score++;
+    $(".score").html("Score: " + score * 2);
   }
 }
 
@@ -184,6 +189,8 @@ function ballPaddleHandling() {
 
     if(bricksLeft == 0) {
       brickReset();
+      level++;
+      $(".level").html("Level: " + level);
     }
   }
 }
