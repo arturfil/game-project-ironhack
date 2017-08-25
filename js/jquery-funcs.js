@@ -5,7 +5,7 @@ $(document).ready(function(){
   $(".start-div").click(function() {
     start();
     $(".tags").show();
-    $(".lives").html("<h3>Lives:</h3>" + livesLeft);
+    $(".lives").html("Lives :" + livesLeft);
     $(this).remove();
   })
 })

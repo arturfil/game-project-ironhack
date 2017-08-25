@@ -41,6 +41,7 @@ const BRICK_ROWS = 9;
 var brickGrid = new Array(BRICK_COLS * BRICK_ROWS); // This will keep track an array that is 2 dimensional (height and width).
 var bricksLeft = 0;
 var livesLeft = 4;
+var score = 0;
 
 const PADDLE_WIDTH = 100;
 const PADDLE_HEIGHT = 10;
@@ -122,9 +123,12 @@ function ballMove() {
     if (livesLeft > 0) {
       ballReset();
       livesLeft--;
+      $(".lives").html("Lives :" + livesLeft);
     } else if (livesLeft <= 0) {
       ballReset();
       brickReset();
+      livesLeft = 4;
+      $(".lives").html("Lives :" + livesLeft);
     }
   }
 
@@ -140,7 +144,9 @@ function ballBrickHandling() {
 
   if(ballBrickCol >= 0 && ballBrickCol < BRICK_COLS && ballBrickRow >= 0 && ballBrickRow < BRICK_ROWS) {
     if(brickGrid[ballCollision]) {
+      //run audio
       brickGrid[ballCollision] = false;
+
       bricksLeft--;
 
       var prevBallX = ballX - ballSpeedX;
