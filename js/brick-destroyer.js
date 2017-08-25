@@ -42,6 +42,7 @@ var brickGrid = new Array(BRICK_COLS * BRICK_ROWS); // This will keep track an a
 var bricksLeft = 0;
 var livesLeft = 4;
 var score = 0;
+var level = 1;
 
 const PADDLE_WIDTH = 100;
 const PADDLE_HEIGHT = 10;
@@ -127,8 +128,9 @@ function ballMove() {
     } else if (livesLeft <= 0) {
       ballReset();
       brickReset();
-      livesLeft = 4;
-      $(".lives").html("Lives :" + livesLeft);
+      // livesLeft = 4;
+      // $(".lives").html("Lives :" + livesLeft);
+      resetdashBoard();
     }
   }
 
@@ -162,7 +164,19 @@ function ballBrickHandling() {
         ballSpeedY *= -1;
       }
     }
+    score++;
+    $(".score").html("Score: " + score * 2);
   }
+}
+
+function resetdashBoard() {
+  score = 0;
+  lives = 4;
+  level = 1;
+
+  $(".score").html("Score: " + score);
+  $(".lives").html("Lives: " + lives);
+  $(".level").html("Level: " + level);
 }
 
 function ballPaddleHandling() {
