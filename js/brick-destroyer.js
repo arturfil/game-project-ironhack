@@ -7,10 +7,6 @@ var ballSpeedX = 5;
 var ballSpeedY = 5;
 var radius = 10;
 
-// var song = new Audio("./audio/fire.m4a");
-// song.loop = true;
-// song.play();
-
 var audio = new Audio();
     i = 0;
 var playlist = new Array(
@@ -32,8 +28,9 @@ audio.src = playlist[0];
 audio.play();
 
 // Check brick collision again;
-const BRICK_W = 80;
-const BRICK_H = 20 ;
+var BRICK_W = 80;
+var BRICK_H = 20;
+
 const BRICK_GAP = 2;
 // const BRICK_COUNT = 8;
 const BRICK_COLS = 10;
@@ -108,6 +105,8 @@ function ballReset() {
 }
 
 function ballMove() {
+  var error = new Audio("./audio/error.wav");
+
   ballX += ballSpeedX;
   ballY += ballSpeedY;
 
@@ -132,6 +131,7 @@ function ballMove() {
       livesLeft = 4;
       $(".lives").html("Lives: " + livesLeft);
       $(".score").html("Score: " + score);
+      error.play();
     }
   }
 
@@ -141,19 +141,22 @@ function ballMove() {
 }
 
 function ballBrickHandling() {
-  var audio = new Audio("./audio/beep.wav");
+  var audio = new Audio("./audio/beep.m4a");
   var ballBrickCol = Math.floor(ballX / BRICK_W) // setting variables for when the brick and the ball x points meet
   var ballBrickRow = Math.floor(ballY / BRICK_H) // setting  variable for when the brick and the ball y points meet.
   var ballCollision = rowColToArrayIndex(ballBrickCol, ballBrickRow); // setting up the array index of the brick when there's a 'collision'
 
   if(ballBrickCol >= 0 && ballBrickCol < BRICK_COLS && ballBrickRow >= 0 && ballBrickRow < BRICK_ROWS) {
     if(brickGrid[ballCollision]) {
-      //run audio
+
+      brickGrid[ballCollision].BRICK_H = 10;
+      brickGrid[ballCollision].BRICK_W = 40;
       brickGrid[ballCollision] = false;
 
       bricksLeft--;
       score++;
       $(".score").html("Score: " + score * 12);
+
       audio.play();
 
       var prevBallX = ballX - ballSpeedX;
@@ -174,8 +177,8 @@ function ballBrickHandling() {
 
 function ballPaddleHandling() {
   // this contorls the movement of the paddle with the mouse given the varibles created for the Paddle creation
-  var paddle = new Audio("./audio/paddle.wav");
-  var levelUp = new Audio("./audio/level-up.wav");
+  var paddle = new Audio("./audio/paddle.m4a");
+  var levelUp = new Audio("./audio/level-up.m4a");
 
   var paddleTopEdgeY = canvas.height-PADDLE_DIST_FROM_EDGE;
   var paddleBottomEdgeY = paddleTopEdgeY + PADDLE_HEIGHT;
@@ -186,7 +189,7 @@ function ballPaddleHandling() {
     ballX > paddleLeftEdgeX - radius &&               //left
     ballX < paddleRightEdgeX + radius ) {           //right
       ballSpeedY = -ballSpeedY;
-
+      paddle.play();
 
     // this specifically refers that your mouse will contorl the CENTER of the mouse
     var centerOfPaddleX = paddleX + PADDLE_WIDTH/2;
