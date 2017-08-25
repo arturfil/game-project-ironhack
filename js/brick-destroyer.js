@@ -7,6 +7,30 @@ var ballSpeedX = 5;
 var ballSpeedY = 5;
 var radius = 10;
 
+// var song = new Audio("./audio/fire.m4a");
+// song.loop = true;
+// song.play();
+
+var audio = new Audio();
+    i = 0;
+var playlist = new Array(
+  "./audio/little_secrets.m4a",
+  "./audio/fire.m4a",
+  "./audio/brocoli.m4a",
+  "./audio/fall.m4a"
+);
+
+audio.addEventListener('ended', function () {
+    i = ++i < playlist.length ? i : 0;
+    console.log(i)
+    audio.src = playlist[i];
+    audio.play();
+}, true);
+audio.volume = 0.3;
+audio.loop = false;
+audio.src = playlist[0];
+audio.play();
+
 // Check brick collision again;
 const BRICK_W = 80;
 const BRICK_H = 20 ;
@@ -191,7 +215,7 @@ function drawAll() {
 
   colorCircle(ballX, ballY, radius, 'white') //draw ball
 
-  colorRect(paddleX, canvas.height-PADDLE_DIST_FROM_EDGE, PADDLE_WIDTH, PADDLE_HEIGHT, 'white') //draw paddle
+  colorRect(paddleX, canvas.height-PADDLE_DIST_FROM_EDGE, PADDLE_WIDTH, PADDLE_HEIGHT, '#8dff75') //draw paddle
 
   drawBricks();// pretty self explanatory
 
