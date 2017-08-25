@@ -11,33 +11,33 @@ var radius = 10;
 // song.loop = true;
 // song.play();
 
-// var audio = new Audio();
-//     i = 0;
-// var playlist = new Array(
-//   "./audio/little_secrets.m4a",
-//   "./audio/fire.m4a",
-//   "./audio/brocoli.m4a",
-//   "./audio/fall.m4a"
-// );
-//
-// audio.addEventListener('ended', function () {
-//     i = ++i < playlist.length ? i : 0;
-//     console.log(i)
-//     audio.src = playlist[i];
-//     audio.play();
-// }, true);
-// audio.volume = 0.3;
-// audio.loop = false;
-// audio.src = playlist[0];
-// audio.play();
+var audio = new Audio();
+    i = 0;
+var playlist = new Array(
+  "./audio/little_secrets.m4a",
+  "./audio/fire.m4a",
+  "./audio/brocoli.m4a",
+  "./audio/fall.m4a"
+);
+
+audio.addEventListener('ended', function () {
+    i = ++i < playlist.length ? i : 0;
+    console.log(i)
+    audio.src = playlist[i];
+    audio.play();
+}, true);
+audio.volume = 0.3;
+audio.loop = false;
+audio.src = playlist[0];
+audio.play();
 
 // Check brick collision again;
 const BRICK_W = 80;
 const BRICK_H = 20 ;
 const BRICK_GAP = 2;
 // const BRICK_COUNT = 8;
-const BRICK_COLS = 1;
-const BRICK_ROWS = 4;
+const BRICK_COLS = 10;
+const BRICK_ROWS = 9;
 var brickGrid = new Array(BRICK_COLS * BRICK_ROWS); // This will keep track an array that is 2 dimensional (height and width).
 var bricksLeft = 0;
 var livesLeft = 4;
